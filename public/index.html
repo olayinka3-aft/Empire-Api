@@ -3,45 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Empire API | AI Gateway</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>Empire API | Elite AI Gateway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #ffcc00;
+            --gold-glow: rgba(255, 204, 0, 0.3);
+            --bg: #050505;
+            --card: #111111;
+            --border: #222;
+        }
+
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        
+        body { 
+            background: var(--bg); 
+            color: #eee; 
+            font-family: 'Space Grotesk', sans-serif; 
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 50%, #1a1a00 0%, #050505 100%);
+        }
+
+        .container { max-width: 800px; width: 95%; padding: 40px 0; }
+
+        header { text-align: center; margin-bottom: 50px; }
+        
+        h1 { 
+            font-size: 3rem; 
+            margin: 0; 
+            color: var(--gold); 
+            text-transform: uppercase; 
+            letter-spacing: 8px;
+            text-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        p.subtitle { color: #888; letter-spacing: 2px; font-size: 0.9rem; }
+
+        .card { 
+            background: var(--card); 
+            border: 1px solid var(--border); 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        input { 
+            width: 100%; padding: 15px; margin: 20px 0; border-radius: 12px; 
+            border: 1px solid var(--border); background: #080808; color: #fff; 
+            font-size: 1rem; font-family: 'Space Grotesk';
+        }
+
+        input:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 10px var(--gold-glow); }
+
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        button { 
+            padding: 15px; border-radius: 12px; border: none; font-weight: 700; 
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .btn-ai { background: var(--gold); color: #000; }
+        .btn-ai:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--gold-glow); }
+
+        .btn-img { background: #fff; color: #000; }
+        .btn-img:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,255,255,0.2); }
+
+        .response-header { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; }
+        .status-dot { height: 8px; width: 8px; background: #00ff88; border-radius: 50%; display: inline-block; margin-right: 5px; }
+
+        pre { 
+            background: #000; padding: 20px; color: #00ff88; border-radius: 12px; 
+            font-family: 'Fira Code', monospace; font-size: 0.85rem; 
+            border: 1px solid #1a1a1a; overflow-x: auto; min-height: 100px;
+            line-height: 1.6;
+        }
+
+        footer { text-align: center; margin-top: 40px; color: #444; font-size: 0.8rem; letter-spacing: 1px; }
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>EMPIRE <span style="color:white;">API</span></h1>
-            <p>The most powerful GPT-4o & DALL-E 3 Gateway for Bot Developers.</p>
+            <h1>EMPIRE</h1>
+            <p class="subtitle">PREMIUM AI ARCHITECTURE</p>
         </header>
 
-        <section class="api-grid">
-            <div class="api-card">
-                <h3>💬 GPT-4o Chat</h3>
-                <p>Advanced conversational AI for your bots.</p>
-                <span class="endpoint-badge">POST /v1/ai/chat</span>
-                <button onclick="copyUrl('https://your-link.onrender.com/v1/ai/chat')">Copy URL</button>
+        <div class="card">
+            <h2 style="margin-top:0; font-weight: 300;">Console_</h2>
+            <input type="text" id="test-prompt" placeholder="Initialize command sequence...">
+            
+            <div class="btn-group">
+                <button class="btn-ai" onclick="testApi('/v1/ai/chat')">Execute Chat</button>
+                <button class="btn-img" onclick="testApi('/v1/image/generate')">Render Image</button>
             </div>
 
-            <div class="api-card">
-                <h3>🖼️ DALL-E 3 Image</h3>
-                <p>Generate high-quality AI images (Nanobanana style).</p>
-                <span class="endpoint-badge">POST /v1/image/generate</span>
-                <button onclick="copyUrl('https://your-link.onrender.com/v1/image/generate')">Copy URL</button>
+            <div class="response-header">
+                <h4 style="margin:0; font-weight: 500; color: #666;">SYSTEM_OUTPUT</h4>
+                <span style="font-size: 0.7rem; color: #666;"><span class="status-dot"></span> ENCRYPTED_CONNECTION</span>
             </div>
-        </section>
+            <pre id="json-response">// Waiting for input...</pre>
+        </div>
 
-        <section class="tester">
-            <h2>Live Empire Tester</h2>
-            <div class="test-controls">
-                <input type="text" id="test-prompt" placeholder="Enter your prompt here (e.g. Write a poem or generate a cat image)">
-                <button onclick="testApi('/v1/ai/chat', 'test-prompt')">Test AI</button>
-                <button onclick="testApi('/v1/image/generate', 'test-prompt')" style="background:#fff;">Test Image</button>
-            </div>
-
-            <h3>Response:</h3>
-            <pre id="json-response">{ "status": "waiting", "message": "Empire is ready for your command..." }</pre>
-        </section>
+        <footer>&copy; 2026 EMPIRE API HUB | ALL RIGHTS RESERVED</footer>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        async function testApi(endpoint) {
+            const resBox = document.getElementById('json-response');
+            const prompt = document.getElementById('test-prompt').value;
+            
+            if(!prompt) {
+                resBox.innerText = "Error: Prompt cannot be empty.";
+                return;
+            }
+
+            resBox.innerText = ">> Establishing link...\n>> Processing payload...";
+            
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt, key: "EMPIRE_ADMIN" })
+                });
+                const data = await response.json();
+                resBox.innerText = JSON.stringify(data, null, 2);
+            } catch (e) {
+                resBox.innerText = "!! CRITICAL_ERROR: Connection to Empire failed.";
+            }
+        }
+    </script>
 </body>
 </html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empire API | AI Gateway</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>EMPIRE <span style="color:white;">API</span></h1>
+            <p>The most powerful GPT-4o & DALL-E 3 Gateway for Bot Developers.</p>
+        </header>
+
+        <section class="api-grid">
+            <div class="api-card">
+                <h3>💬 GPT-4o Chat</h3>
+                <p>Advanced conversational AI for your bots.</p>
+                <span class="endpoint-badge">POST /v1/ai/chat</span>
+                <button onclick="copyUrl('https://your-link.onrender.com/v1/ai/chat')">Copy URL</button>
+            </div>
+
+            <div class="api-card">
+                <h3>🖼️ DALL-E 3 Image</h3>
+                <p>Generate high-quality AI images (Nanobanana style).</p>
+                <span class="endpoint-badge">POST /v1/image/generate</span>
+                <button onclick="copyUrl('https://your-link.onrender.com/v1/image/generate')">Copy URL</button>
+            </div>
+        </section>
+
+        <section class="tester">
+            <h2>Live Empire Tester</h2>
+            <div class="test-controls">
+                <input type="text" id="test-prompt" placeholder="Enter your prompt here (e.g. Write a poem or generate a cat image)">
+                <button onclick="testApi('/v1/ai/chat', 'test-prompt')">Test AI</button>
+                <button onclick="testApi('/v1/image/generate', 'test-prompt')" style="background:#fff;">Test Image</button>
+            </div>
+
+            <h3>Response:</h3>
+            <pre id="json-response">{ "status": "waiting", "message": "Empire is ready for your command..." }</pre>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
